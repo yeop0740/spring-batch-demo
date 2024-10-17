@@ -21,24 +21,22 @@ public class SimpleJobConfiguration {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
 
+    private final SimpleJobTasklet tasklet1;
+
     @Bean
     public Job simpleJob() {
+        log.info(">>>>> definition simpleJob");
         return new JobBuilder("simpleJob", jobRepository)
-                .start(simpleStep1(null))
+                .start(simpleStep1())
                 .next(simpleStep2(null))
                 .build();
     }
 
-    @Bean
-    @JobScope
-    public Step simpleStep1(@Value("#{jobParameters[requestDate]}") String requestDate) {
+//    @Bean
+//    @JobScope
+    public Step simpleStep1() {
         return new StepBuilder("simpleStep1", jobRepository)
-                .tasklet((contribution, chunkContext) -> {
-                    log.info(">>>>> This is Step1");
-                    log.info(">>>>> requestDate = {}", requestDate);
-                    return RepeatStatus.FINISHED;
-//                    throw new IllegalArgumentException("step1에서 실패합니다.");
-                }, transactionManager)
+                .tasklet(tasklet1, transactionManager)
                 .build();
     }
 
