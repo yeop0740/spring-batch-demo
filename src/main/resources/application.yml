@@ -28,3 +28,9 @@ spring:
   batch:
     job:
       name: ${job.name:NONE}
+
+logging:
+  level:
+    org:
+      springframework:
+        batch: DEBUG

@@ -48,6 +48,7 @@ public class ScopeJobConfiguration {
     }
 
     @Bean
+    @JobScope
     public Step scopeStep2(@Value("#{jobParameters[requestDate]}") String requestDate) {
         return new StepBuilder("scopeStep2", jobRepository)
                 .tasklet(scopeStep2Tasklet(null), transactionManager)
